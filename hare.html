@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>pathExample</title>
+    <meta charset='utf-8' />
+</head>
+
+<body>
+    <canvas id='example'>Обновите браузер</canvas>
+    <script>
+        var example = document.getElementById("example"),
+        ctx = example.getContext('2d');
+        example.height = 500;
+        example.width = 500;
+
+
+
+        function rotatePoint(point, pivotPoint, dec) {
+            var x = point.x;
+            point.x = pivotPoint.x +
+                (point.x - pivotPoint.x) * Math.cos(dec) -
+                (point.y - pivotPoint.y) * Math.sin(dec);
+            point.y = pivotPoint.y +
+                (point.y - pivotPoint.y) * Math.cos(dec) +
+                (x - pivotPoint.x) * Math.sin(dec);
+        }
+
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawBody() {
+            // ctx.arc(150, 150, 50, 0, 2 * Math.PI, true);
+            // ctx.stroke();
+            // ctx.closePath();
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+
+            var dots = new Array();
+            dots.push({
+                x: 200,
+                y: 150
+            });
+            var pivotP = {
+                x: 150,
+                y: 150
+            };
+            var j = 0;
+            for (var i = 0; i < 360; i += getRandomInt(10, 25)) {
+                var rad = i * Math.PI / 180.0;
+                var p1 = {
+                    x: 200,
+                    y: 150
+                };
+
+                rotatePoint(p1, pivotP, rad);
+                dots.push(p1);
+                j++;
+
+                var lastD = dots[j - 1];
+                //drawLine(lastD.x, lastD.y, p1.x, p1.y);
+
+                var centerX = (lastD.x + p1.x) / 2.0;
+                var centerY = (lastD.y + p1.y) / 2.0;
+                ctx.moveTo(lastD.x, lastD.y);
+                ctx.lineWidth = 1;
+                if (i > 0 && i < 90) {
+                    //ctx.quadraticCurveTo(centerX + getRandomInt(1, 10), centerY + getRandomInt(1, 10), p1.x, p1.y);
+                    ctx.bezierCurveTo(lastD.x + getRandomInt(5, 12), lastD.y, p1.x, p1.y + getRandomInt(5, 12), p1.x, p1.y);
+                } else if (i > 90 && i < 180) {
+                    // ctx.quadraticCurveTo(centerX - getRandomInt(1, 10), centerY + getRandomInt(1, 10), p1.x, p1.y);
+                    ctx.bezierCurveTo(lastD.x - getRandomInt(5, 12), lastD.y, p1.x, p1.y + getRandomInt(5, 12), p1.x, p1.y);
+                } else if (i > 180 && i < 270) {
+                    // ctx.quadraticCurveTo(centerX - getRandomInt(1, 5), centerY - getRandomInt(1, 5), p1.x, p1.y);
+                    ctx.bezierCurveTo(lastD.x - getRandomInt(5, 12), lastD.y, p1.x, p1.y - getRandomInt(5, 12), p1.x, p1.y);
+                } else if (i > 270 && i < 360) {
+                    // ctx.quadraticCurveTo(centerX + getRandomInt(1, 5), centerY - getRandomInt(1, 5), p1.x, p1.y);
+                    ctx.bezierCurveTo(lastD.x + getRandomInt(5, 12), lastD.y, p1.x, p1.y - getRandomInt(5, 12), p1.x, p1.y);
+                }
+                ctx.stroke();
+            }
+
+            drawLine(130, 130, 140, 130);
+
+            ctx.beginPath();
+            ctx.arc(170, 130, 7, 0, 2 * Math.PI, true);
+            ctx.stroke();
+        }
+
+        function drawEars() {
+
+            var p1 = {
+                x: 200,
+                y: 150
+            };
+            var p2 = {
+                x: 200,
+                y: 150
+            };
+            var pivotP = {
+                x: 150,
+                y: 150
+            };
+            rotatePoint(p1, pivotP, -Math.PI / 4.1);
+            rotatePoint(p2, pivotP, -Math.PI / 2.5);
+
+            ctx.moveTo(p1.x, p1.y);
+            ctx.bezierCurveTo(250, 1, 170, 25, p2.x, p2.y);
+            ctx.stroke();
+
+            p1 = {
+                x: 200,
+                y: 150
+            };
+            p2 = {
+                x: 200,
+                y: 150
+            };
+
+            rotatePoint(p1, pivotP, -Math.PI / 1.3);
+            rotatePoint(p2, pivotP, -Math.PI / 1.6);
+
+            ctx.moveTo(p1.x, p1.y);
+            ctx.bezierCurveTo(50, 25, 125, 1, p2.x, p2.y);
+            ctx.stroke();
+        }
+
+        function drawHand() {
+            var p1 = {
+                x: 200,
+                y: 150
+            };
+            var p2 = {
+                x: 200,
+                y: 150
+            };
+            var pivotP = {
+                x: 150,
+                y: 150
+            };
+            rotatePoint(p1, pivotP, Math.PI / 15);
+            rotatePoint(p2, pivotP, -Math.PI / 17);
+
+            ctx.moveTo(p1.x, p1.y);
+            ctx.bezierCurveTo(225, 170, 225, 130, p2.x, p2.y);
+            ctx.stroke();
+
+            p1 = {
+                x: 200,
+                y: 150
+            };
+            p2 = {
+                x: 200,
+                y: 150
+            };
+
+            rotatePoint(p1, pivotP, Math.PI / 1.08);
+            rotatePoint(p2, pivotP, -Math.PI / 1.08);
+
+            ctx.moveTo(p1.x, p1.y);
+            ctx.bezierCurveTo(75, 170, 75, 130, p2.x, p2.y);
+            ctx.stroke();
+        }
+
+        function drawFeed() {
+            var p1 = {
+                x: 200,
+                y: 150
+            };
+            var pivotP = {
+                x: 150,
+                y: 150
+            };
+            rotatePoint(p1, pivotP, Math.PI / 1.5);
+
+            ctx.moveTo(112, 220);
+            ctx.quadraticCurveTo(p1.x, p1.y - 24, 137, 220);
+            ctx.stroke();
+
+            drawLine(112, 220, 137, 220);
+
+            p1 = {
+                x: 200,
+                y: 150
+            };
+            rotatePoint(p1, pivotP, Math.PI / 3);
+
+            ctx.moveTo(162, 220);
+            ctx.quadraticCurveTo(p1.x, p1.y - 24, 187, 220);
+            ctx.stroke();
+
+            drawLine(162, 220, 187, 220);
+        }
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#BCB0B0";
+        for (var i = 0; i < 1000; i += 10) {
+            drawLine(0, i, 1000, i);
+            drawLine(i, 0, i, 1000);
+        }
+
+        ctx.strokeStyle = "#00a83c";
+        ctx.lineWidth = 3;
+        drawLine(150, 0, 150, 1000);
+        ctx.strokeStyle = "#BC0101";
+        drawLine(0, 150, 1000, 150);
+
+        ctx.strokeStyle = "#252424";
+        ctx.lineWidth = 2;
+        drawBody();
+        ctx.lineWidth = 2;
+        drawEars();
+        drawHand();
+        drawFeed();
+    </script>
+</body>
+
+</html>

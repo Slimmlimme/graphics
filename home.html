@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>pathExample</title>
+    <meta charset='utf-8' />
+    <script src='complex.js'></script>
+    <script src='home.js'></script>
+</head>
+
+<body>
+    <canvas id='example'>Обновите браузер</canvas>
+    <script>
+        var example = document.getElementById("example"),
+            ctx = example.getContext('2d');
+        example.height = 500;
+        example.width = 500;
+
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        ctx.lineWidth = 2;
+        var h = new home();
+        //h.translate(new Complex(5, 5));
+        //h.scale(1.15);
+        h.draw(drawLine);
+
+
+        ctx.lineWidth = 1;
+        for (var i = 0; i < 1000; i += 10) {
+            drawLine(0, i, 1000, i);
+            drawLine(i, 0, i, 1000);
+        }
+
+        ctx.strokeStyle = "#00a83c";
+        ctx.lineWidth = 3;
+        drawLine(130, 0, 130, 1000);
+        ctx.strokeStyle = "#CE1717";
+        drawLine(0, 130, 1000, 130);
+    </script>
+</body>
+
+</html>
